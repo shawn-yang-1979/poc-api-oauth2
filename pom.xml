@@ -37,7 +37,8 @@
 		</dependency>
 	</dependencies>
 	<modules>
-		<module>poc-api-oauth2-resource-server</module>
+		<module>poc-api-oauth2-application</module>
 		<module>poc-api-oauth2-shared</module>
+		<module>poc-api-oauth2-domain</module>
 	</modules>
 </project>
