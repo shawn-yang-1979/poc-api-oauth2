@@ -26,6 +26,6 @@ public class UsersController {
 
 	@PostMapping
 	public void post(@RequestBody UserDto userDto) {
-		userFacade.create(userDto);
+		userFacade.signUp(userDto);
 	}
 }

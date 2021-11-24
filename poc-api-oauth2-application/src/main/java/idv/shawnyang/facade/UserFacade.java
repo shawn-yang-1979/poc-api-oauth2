@@ -27,16 +27,16 @@ public class UserFacade {
 				.collect(Collectors.toList());
 	}
 
-	private UserDto convert(User user) {
-		UserDto dto = new UserDto();
-		dto.setEmail(user.getEmail());
-		return dto;
+	public void signUp(UserDto userDto) {
+		User user = new User();
+		user.setUsername(userDto.getUsername());
+		userRepos.save(user);
 	}
 
-	public void create(UserDto userDto) {
-		User user = new User();
-		user.setEmail(userDto.getEmail());
-		userRepos.save(user);
+	private UserDto convert(User user) {
+		UserDto dto = new UserDto();
+		dto.setUsername(user.getUsername());
+		return dto;
 	}
 
 }
