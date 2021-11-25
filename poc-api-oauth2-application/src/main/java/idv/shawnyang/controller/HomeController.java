@@ -1,23 +1,18 @@
 package idv.shawnyang.controller;
 
+import java.security.Principal;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 public class HomeController {
 	@GetMapping
-	public Greeting get() {
-		Greeting g = new Greeting();
-		g.setSayHi("Hi");
-		return g;
-	}
-
-	@Getter
-	@Setter
-	private static class Greeting {
-		private String sayHi;
+	public Principal get(Principal p) {
+		log.info(p.getName());
+		return p;
 	}
 }
