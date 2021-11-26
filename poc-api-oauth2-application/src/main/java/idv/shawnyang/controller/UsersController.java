@@ -1,5 +1,6 @@
 package idv.shawnyang.controller;
 
+import java.security.Principal;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import idv.shawnyang.UserDto;
 import idv.shawnyang.facade.UserFacade;
 
 @RestController
-@RequestMapping(value = "/users")
+@RequestMapping(value = "/api/users")
 public class UsersController {
 
 	@Autowired
@@ -22,6 +23,11 @@ public class UsersController {
 	@GetMapping
 	public Collection<UserDto> get() {
 		return userFacade.getUsers();
+	}
+
+	@GetMapping("/current")
+	public String getCurrent(Principal p) {
+		return p.getName();
 	}
 
 	@PostMapping
