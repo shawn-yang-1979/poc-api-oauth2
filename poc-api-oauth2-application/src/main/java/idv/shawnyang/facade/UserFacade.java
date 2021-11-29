@@ -1,6 +1,7 @@
 package idv.shawnyang.facade;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import idv.shawnyang.UserDto;
+import idv.shawnyang.entity.OAuth2User;
 import idv.shawnyang.entity.User;
 import idv.shawnyang.repos.UserRepos;
 
@@ -27,15 +29,31 @@ public class UserFacade {
 				.collect(Collectors.toList());
 	}
 
-	public void signUp(UserDto userDto) {
-		User user = new User();
-		user.setUsername(userDto.getUsername());
-		userRepos.save(user);
+	public UserDto handleAuthenticationSuccess(String email, String oauth2ProviderId, String oauth2ProviderUsername) {
+		Optional<User> userOpt = userRepos.findByEmail(email);
+		User user;
+		OAuth2User oauth2User = new OAuth2User();
+		oauth2User.setOauth2ProviderId(oauth2ProviderId);
+		oauth2User.setOauth2ProviderUsername(oauth2ProviderUsername);
+		if (userOpt.isPresent()) {
+			user = userOpt.get();
+			if (user.getOauth2Users().stream()
+					.noneMatch(o -> o.getOauth2Username().equals(oauth2User.getOauth2Username()))) {
+				user.addOAuth2User(oauth2User);
+				user = userRepos.save(user);
+			}
+		} else {
+			user = new User();
+			user.setEmail(email);
+			user.addOAuth2User(oauth2User);
+			user = userRepos.save(user);
+		}
+		return convert(user);
 	}
 
 	private UserDto convert(User user) {
 		UserDto dto = new UserDto();
-		dto.setUsername(user.getUsername());
+		dto.setEmail(user.getEmail());
 		return dto;
 	}
 

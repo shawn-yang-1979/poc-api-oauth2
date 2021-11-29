@@ -10,6 +10,6 @@ import idv.shawnyang.entity.User;
 @Repository
 public interface UserRepos extends PagingAndSortingRepository<User, Long> {
 
-	Optional<User> findByUsername(String username);
+	Optional<User> findByEmail(String email);
 
 }
